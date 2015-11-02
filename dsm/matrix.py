@@ -1,9 +1,9 @@
 from collections import Counter
 from dsm.window import Window
-
+import pickle
 
 class Matrix:
-    def __init__(self, candidates, features, corpus):
+    def __init__(self, candidates=None, features=None, corpus=None, model=None):
         """
         Create a (empty) sparse matrix indexed by candidate and feature words
         :param candidates: list of words for which vectors will be built
@@ -12,15 +12,16 @@ class Matrix:
         :return:
         """
 
-        self.m = dict()
         self.candidates = candidates
+        if candidates is not None:
+            for c in candidates:
+                # Counter defaults to 0 for missing keys – no need to instantiate features in all of them
+                self.m[c] = Counter()
+
         self.features = features
         self.corpus = corpus
 
-        for c in candidates:
-            # Counter defaults to 0 for missing keys – no need to instantiate features in all of them
-            self.m[c] = Counter()
-        return
+        self.m = dict() if model is None else self.load(model)
 
     def __getitem__(self, item):
         if type(item) == str:
@@ -41,3 +42,10 @@ class Matrix:
         for (word, neighbours) in window:
             if word in self.candidates:
                 self.m[word].update([n for n in neighbours if (n in self.features)])
+
+    def load(self, serialized):
+        """
+        Load a serialized matrix into an object instance
+        :param serialized: file handle to a serialized matrix of type (Dict of Counters)
+        """
+        self.m = pickle.load(serialized)
