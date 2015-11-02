@@ -17,6 +17,8 @@ def main(f_candidates, f_features, f_corpus):
         model = Matrix(candidates, features, h_corpus)
         model.populate()
 
+        print(model.m['love'])
+
         # json.dump(model.m, fout1)
         pickle.dump(model.m, fout)
 

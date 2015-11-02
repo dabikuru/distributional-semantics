@@ -26,4 +26,6 @@ var/
 .installed.cfg
 *.egg
 
+# IDE and OS
 .DS_Store
+.idea
