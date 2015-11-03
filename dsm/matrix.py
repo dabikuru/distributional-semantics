@@ -45,7 +45,14 @@ class Matrix:
 
     def load(self, serialized):
         """
-        Load a serialized matrix into an object instance
+        Load a serialized matrix into the object instance
         :param serialized: file handle to a serialized matrix of type (Dict of Counters)
         """
         self.m = pickle.load(serialized)
+
+    def save(self, fout):
+        """
+        Serialize the matrix to a pickled file.
+        :param fout: file handle to output file
+        """
+        pickle.dump(self.m, fout)
